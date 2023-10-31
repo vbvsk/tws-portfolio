@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm build
+        run: npm run build
 
   deploy:
     runs-on: ubuntu-latest
@@ -26,8 +26,12 @@ jobs:
 
     steps:
       - name: Setup AWS CLI
-        run: aws configure set aws_access_key_id AKIAULQET33SHGJAHWFG && aws configure set aws_secret_access_key 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 && aws configure set region us-east-1
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region us-east-1
 
       - name: Sync to S3
-        run: aws s3 cp VK-website.png s3://vk-bucket1/
+        run: |
+          aws s3 cp ./VK-website.png s3://vk-bucket1/
 
